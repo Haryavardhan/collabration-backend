@@ -215,8 +215,7 @@ def send_room_message(room_id):
 @jwt_required()
 def start_meet(room_id):
     """Notify all approved room members via email and SMS that a meet has been initiated."""
-    user_id = get_jwt_identity()
-    initiator = db.session.get(User, user_id)
+    user_id = int(get_jwt_identity())
     room = db.session.get(Room, room_id)
     
     if not room:
@@ -227,42 +226,43 @@ def start_meet(room_id):
     if not membership:
         return jsonify({"error": "Unauthorized. You must be an approved member."}), 403
     
-    # Get ALL approved members of the room
-    approved_members = RoomMember.query.filter_by(room_id=room_id, status='approved').all()
+    initiator = db.session.get(User, user_id)
+    
+    # Get ALL approved members with their User info in ONE query
+    members_data = db.session.query(User).join(
+        RoomMember, User.id == RoomMember.user_id
+    ).filter(
+        RoomMember.room_id == room_id,
+        RoomMember.status == 'approved',
+        User.id != user_id  # Skip initiator
+    ).all()
     
     meet_link = f"https://meet.jit.si/CollabSphere_Room_{room_id}"
-    notified_count = 0
     
-    for mem in approved_members:
-        if str(mem.user_id) == str(user_id):
-            continue  # Skip notifying the person who started the meet
-        
-        target_user = db.session.get(User, mem.user_id)
-        if not target_user:
-            continue
-        
-        # Send Email notification
-        NotificationService.send_email(
-            to_email=target_user.email,
+    # Prepare batch recipients
+    recipients = []
+    for u in members_data:
+        recipients.append({
+            "email": u.email,
+            "phone": u.phone_number,
+            "name": u.name
+        })
+    
+    if recipients:
+        print(f">>> StartMeet: Notifying {len(recipients)} members in background...")
+        NotificationService.send_bulk_notifications(
+            recipients=recipients,
             subject=f"🎥 Meet Started in {room.subject}",
             message=(
-                f"Hello {target_user.name},\n\n"
+                f"Hello {{name}},\n\n"
                 f"{initiator.name} has just started a video meet in the room '{room.subject}'!\n\n"
                 f"Join the meet here: {meet_link}\n\n"
-                f"Or log in to CollabSphere and open the Meet tab in the '{room.subject}' room."
+                f"Or log in to CollabSphere and open the Meet tab."
             )
         )
-        
-        # Send SMS notification — use real phone number if available
-        phone = target_user.phone_number if target_user.phone_number else "+0000000000"
-        NotificationService.send_sms(
-            phone_number=phone,
-            message=f"CollabSphere: {initiator.name} started a meet in '{room.subject}'! Join: {meet_link}"
-        )
-        notified_count += 1
     
     return jsonify({
         "status": "success",
-        "message": f"Meet started! {notified_count} member(s) have been notified via email.",
+        "message": f"Meet initiated! {len(recipients)} member(s) are being notified.",
         "meet_link": meet_link
     }), 200
