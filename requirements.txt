@@ -1,0 +1,11 @@
+flask
+flask-cors
+firebase-admin
+python-dotenv
+requests
+flask-jwt-extended
+psycopg2-binary
+SQLAlchemy
+flask-sqlalchemy
+razorpay
+gunicorn

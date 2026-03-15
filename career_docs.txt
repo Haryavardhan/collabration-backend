@@ -1,0 +1,190 @@
+CAREER GUIDANCE KNOWLEDGE BASE
+================================
+
+This document is used by an AI-powered chatbot for career guidance, course recommendation,
+mentor suggestion, and team-based collaborative learning.
+
+The chatbot assists students from 10th class to degree level.
+
+------------------------------------------------
+SECTION 1: CAREER GUIDANCE FOR 10TH CLASS STUDENTS
+------------------------------------------------
+
+After 10th class, students can choose different streams based on interest and aptitude.
+
+Major options after 10th:
+- MPC (Maths, Physics, Chemistry): Suitable for engineering, architecture, and technology careers.
+- BiPC (Biology, Physics, Chemistry): Suitable for medical, pharmacy, and life science careers.
+- Commerce: Leads to CA, CMA, BBA, MBA, finance, and business careers.
+- Arts/Humanities: Leads to law, civil services, journalism, psychology, and social sciences.
+- Polytechnic/Diploma: Skill-oriented technical education with faster employment options.
+- ITI (Industrial Training Institute): Practical skill-based jobs in electrical, mechanical, and trades.
+
+Common mistakes after 10th:
+- Choosing a stream due to peer pressure
+- Selecting courses without understanding future scope
+- Relying on rumors or unverified information
+
+The chatbot helps students choose streams based on interests, strengths, and long-term goals.
+
+------------------------------------------------
+SECTION 2: CAREER GUIDANCE FOR 11TH & 12TH STUDENTS
+------------------------------------------------
+
+After intermediate (11th and 12th), students can choose higher education paths.
+
+Engineering options:
+- Computer Science Engineering
+- Artificial Intelligence & Machine Learning
+- Data Science
+- Electronics & Communication
+- Mechanical Engineering
+- Civil Engineering
+
+Medical & Life Sciences:
+- MBBS
+- BDS
+- B.Pharmacy
+- Nursing
+- Biotechnology
+
+Commerce & Management:
+- B.Com
+- BBA
+- CA
+- CMA
+- MBA (after degree)
+
+Other fields:
+- Law (LLB, BA LLB)
+- Design (UI/UX, Fashion, Interior)
+- Animation & Multimedia
+- Journalism & Mass Communication
+
+The chatbot suggests suitable courses based on marks, interests, and career goals.
+
+------------------------------------------------
+SECTION 3: CAREER GUIDANCE FOR DEGREE STUDENTS
+------------------------------------------------
+
+Degree students often struggle with career direction and skill development.
+
+Popular career domains:
+- Software Development
+- Artificial Intelligence & Machine Learning
+- Data Science & Analytics
+- Web Development
+- Cyber Security
+- Cloud Computing & DevOps
+- Product Management
+
+Higher studies:
+- M.Tech / MS
+- MBA
+- Research (PhD)
+
+Career options:
+- Job
+- Startup
+- Higher education
+- Research
+
+The chatbot provides:
+- Skill roadmap
+- Internship suggestions
+- Project ideas
+- Certification guidance
+
+------------------------------------------------
+SECTION 4: COURSE RECOMMENDATION LOGIC
+------------------------------------------------
+
+Course recommendations are based on:
+- Student interests
+- Academic background
+- Career goals
+- Industry demand
+
+Example:
+If a student is interested in AI:
+Recommended path:
+- Python programming
+- Data Structures
+- Machine Learning
+- Deep Learning
+- Projects in AI
+
+If a student is interested in Web Development:
+Recommended path:
+- HTML, CSS, JavaScript
+- React / Angular
+- Backend (Node.js, Django)
+- Databases
+- Full-stack projects
+
+------------------------------------------------
+SECTION 5: MENTOR GUIDANCE
+------------------------------------------------
+
+Mentors play a key role in student success.
+
+Mentor roles:
+- Guide students in career decisions
+- Review projects
+- Provide real-world insights
+- Help students avoid wrong career paths
+
+The system recommends mentors based on:
+- Course expertise
+- Student interests
+- Team requirements
+
+Students can request mentors and mentors can accept or reject requests.
+
+------------------------------------------------
+SECTION 6: TEAM-BASED LEARNING
+------------------------------------------------
+
+Collaborative learning improves understanding and motivation.
+
+Features:
+- Students can create teams
+- Students can request to join teams
+- Mentors can guide teams
+- Real-time collaboration using chat, whiteboard, and video calls
+
+Benefits:
+- Peer learning
+- Better communication skills
+- Practical problem solving
+- Industry-style teamwork
+
+------------------------------------------------
+SECTION 7: AI CHATBOT ROLE
+------------------------------------------------
+
+The AI chatbot provides:
+- Career guidance
+- Course recommendations
+- Mentor suggestions
+- Clarification of doubts
+- Roadmap planning
+
+If information is not directly available, the chatbot uses Retrieval-Augmented Generation (RAG)
+to fetch relevant knowledge from this document and generate accurate responses.
+
+The chatbot avoids:
+- Misleading information
+- Unverified rumors
+- Random internet data
+
+------------------------------------------------
+SECTION 8: IMPORTANT DISCLAIMER
+------------------------------------------------
+
+The chatbot provides guidance and recommendations based on data and best practices.
+Final career decisions should be taken by students with proper consideration and mentor advice.
+
+================================
+END OF KNOWLEDGE BASE
+================================
