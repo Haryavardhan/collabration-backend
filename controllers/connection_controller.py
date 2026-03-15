@@ -8,7 +8,7 @@ from models import User, MentorConnection
 def request_connection(target_id):
     """User sends a connection request to another user."""
     student_id = int(get_jwt_identity())
-    target_user  = User.query.get(target_id)
+    target_user = db.session.get(User, target_id)
 
     if not target_user:
         return jsonify({"error": "User not found"}), 404
@@ -46,7 +46,7 @@ def get_pending_requests():
 def respond_to_request(connection_id):
     """User approves or rejects a connection request."""
     user_id = int(get_jwt_identity())
-    conn = MentorConnection.query.get(connection_id)
+    conn = db.session.get(MentorConnection, connection_id)
     # The current user must be the target (mentor_id) of the request to approve/reject it.
     if not conn or conn.mentor_id != user_id:
         return jsonify({"error": "Not found or unauthorized"}), 404

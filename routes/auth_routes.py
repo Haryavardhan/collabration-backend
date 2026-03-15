@@ -1,3 +1,4 @@
+import os
 from flask import Blueprint, jsonify, request
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import create_access_token, decode_token
@@ -54,7 +55,8 @@ def forgot_password():
     reset_token = create_access_token(identity=str(user.id), expires_delta=datetime.timedelta(minutes=15))
     
     # In a real app, this would be your frontend URL
-    reset_link = f"http://localhost:5173/reset-password?token={reset_token}"
+    frontend_url = os.getenv('FRONTEND_URL', 'https://collabration-frontend.vercel.app')
+    reset_link = f"{frontend_url}/reset-password?token={reset_token}"
     
     NotificationService.send_email(
         to_email=user.email,
@@ -78,7 +80,7 @@ def reset_password():
         decoded = decode_token(token)
         user_id = decoded.get('sub')
         
-        user = User.query.get(user_id)
+        user = db.session.get(User, user_id)
         if not user:
             return jsonify({"msg": "User not found"}), 404
             

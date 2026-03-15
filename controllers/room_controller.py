@@ -14,7 +14,7 @@ def create_room():
         return jsonify({"error": "Subject is required"}), 400
         
     user_id = get_jwt_identity()
-    user = User.query.get(user_id)
+    user = db.session.get(User, user_id)
     
     if not user:
         return jsonify({"error": "User not found"}), 404
@@ -62,8 +62,8 @@ def get_rooms():
 @jwt_required()
 def request_join_room(room_id):
     user_id = get_jwt_identity()
-    user = User.query.get(user_id)
-    room = Room.query.get(room_id)
+    user = db.session.get(User, user_id)
+    room = db.session.get(Room, room_id)
     
     if not room:
         return jsonify({"error": "Room not found"}), 404
@@ -87,7 +87,7 @@ def request_join_room(room_id):
     ).all()
     
     for am in admins_and_mentors:
-        target_user = User.query.get(am.user_id)
+        target_user = db.session.get(User, am.user_id)
         if target_user:
             # Send Email
             NotificationService.send_email(
@@ -120,8 +120,8 @@ def approve_join_request(room_id, target_user_id):
     db.session.commit()
     
     # Notify the user they were approved
-    target_user = User.query.get(target_user_id)
-    room = Room.query.get(room_id)
+    target_user = db.session.get(User, target_user_id)
+    room = db.session.get(Room, room_id)
     if target_user and room:
         NotificationService.send_email(
             to_email=target_user.email,
@@ -135,7 +135,7 @@ def approve_join_request(room_id, target_user_id):
 def get_room_details(room_id):
     user_id = get_jwt_identity()
     
-    room = Room.query.get(room_id)
+    room = db.session.get(Room, room_id)
     if not room:
         return jsonify({"error": "Room not found"}), 404
         
@@ -169,7 +169,7 @@ def add_room_task(room_id):
     user_id = get_jwt_identity()
     data = request.json
     
-    room = Room.query.get(room_id)
+    room = db.session.get(Room, room_id)
     if not room: return jsonify({"error": "Room not found"}), 404
         
     new_task = Task(
@@ -216,8 +216,8 @@ def send_room_message(room_id):
 def start_meet(room_id):
     """Notify all approved room members via email and SMS that a meet has been initiated."""
     user_id = get_jwt_identity()
-    initiator = User.query.get(user_id)
-    room = Room.query.get(room_id)
+    initiator = db.session.get(User, user_id)
+    room = db.session.get(Room, room_id)
     
     if not room:
         return jsonify({"error": "Room not found"}), 404
@@ -237,7 +237,7 @@ def start_meet(room_id):
         if str(mem.user_id) == str(user_id):
             continue  # Skip notifying the person who started the meet
         
-        target_user = User.query.get(mem.user_id)
+        target_user = db.session.get(User, mem.user_id)
         if not target_user:
             continue
         

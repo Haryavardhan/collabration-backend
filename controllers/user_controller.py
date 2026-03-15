@@ -6,7 +6,7 @@ from models import User
 
 @jwt_required()
 def get_user_profile(user_id):
-    user = User.query.get(user_id)
+    user = db.session.get(User, user_id)
     if not user:
         return jsonify({"error": "User not found"}), 404
     return jsonify(user.to_dict()), 200
@@ -20,7 +20,7 @@ def update_user_profile(user_id):
     if str(current_user_id) != str(user_id):
         return jsonify({"error": "Unauthorized"}), 403
 
-    user = User.query.get(user_id)
+    user = db.session.get(User, user_id)
     if not user:
         return jsonify({"error": "User not found"}), 404
 
@@ -69,7 +69,7 @@ def get_mentors():
 def get_suggested_mentors_for_room(room_id):
     """Return mentors ranked by keyword overlap with the room's subject/description."""
     from models import Room
-    room = Room.query.get(room_id)
+    room = db.session.get(Room, room_id)
     if not room:
         return jsonify({"error": "Room not found"}), 404
 

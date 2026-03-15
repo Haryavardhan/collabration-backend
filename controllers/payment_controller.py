@@ -20,7 +20,7 @@ def create_razorpay_account():
     Mentor calls this to create a linked Razorpay Route account.
     """
     mentor_id = int(get_jwt_identity())
-    mentor = User.query.get(mentor_id)
+    mentor = db.session.get(User, mentor_id)
     
     if not mentor or mentor.role != 'mentor':
         return jsonify({"error": "Only mentors can connect bank accounts"}), 403
@@ -91,7 +91,7 @@ def create_order(mentor_id):
     student_id = int(get_jwt_identity())
 
     # Validate mentor
-    mentor = User.query.get(mentor_id)
+    mentor = db.session.get(User, mentor_id)
     if not mentor or mentor.role != 'mentor':
         return jsonify({"error": "Mentor not found"}), 404
 
@@ -204,7 +204,7 @@ def verify_payment():
     msg = f"{order_id}|{payment_id}".encode('utf-8')
     expected = hmac.new(key_secret, msg, hashlib.sha256).hexdigest()
 
-    payment = Payment.query.get(db_id)
+    payment = db.session.get(Payment, db_id)
     if not payment or payment.student_id != student_id:
         return jsonify({"error": "Payment record not found"}), 404
 
@@ -240,7 +240,7 @@ def release_payment(payment_id):
     Only the student who paid or an admin should be able to call this.
     """
     student_id = int(get_jwt_identity())
-    payment = Payment.query.get(payment_id)
+    payment = db.session.get(Payment, payment_id)
     
     if not payment:
         return jsonify({"error": "Payment not found"}), 404
@@ -318,7 +318,7 @@ def razorpay_webhook():
 def get_payment_history():
     """Returns payments for the logged-in user (as student or mentor)."""
     user_id = int(get_jwt_identity())
-    user = User.query.get(user_id)
+    user = db.session.get(User, user_id)
     if not user:
         return jsonify({"error": "User not found"}), 404
 
