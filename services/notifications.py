@@ -4,6 +4,7 @@
 import logging
 import os
 import smtplib
+import threading
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from dotenv import load_dotenv
@@ -15,6 +16,15 @@ logger = logging.getLogger(__name__)
 class NotificationService:
     @staticmethod
     def send_email(to_email: str, subject: str, message: str):
+        # Run email in a separate thread to avoid blocking the main request
+        threading.Thread(
+            target=NotificationService._send_email_sync, 
+            args=(to_email, subject, message),
+            daemon=True
+        ).start()
+
+    @staticmethod
+    def _send_email_sync(to_email: str, subject: str, message: str):
         smtp_server = os.getenv("SMTP_SERVER", "smtp.gmail.com")
         smtp_port = int(os.getenv("SMTP_PORT", 587))
         smtp_user = os.getenv("SMTP_USERNAME")
@@ -61,6 +71,15 @@ class NotificationService:
 
     @staticmethod
     def send_sms(phone_number: str, message: str):
+        # Run SMS in a separate thread
+        threading.Thread(
+            target=NotificationService._send_sms_sync,
+            args=(phone_number, message),
+            daemon=True
+        ).start()
+
+    @staticmethod
+    def _send_sms_sync(phone_number: str, message: str):
         twilio_sid = os.getenv("TWILIO_ACCOUNT_SID")
         twilio_token = os.getenv("TWILIO_AUTH_TOKEN")
         twilio_from = os.getenv("TWILIO_PHONE_NUMBER")
