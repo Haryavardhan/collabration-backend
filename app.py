@@ -25,17 +25,21 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY', 'super-secret-key') # Change this in production
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(hours=24)
 
+print(">>> Backend: Initializing extensions...")
 db.init_app(app)
 jwt.init_app(app)
 
+print(">>> Backend: Creating database tables (create_all)...")
 # Create tables
 with app.app_context():
     import models  # Ensure models are known to SQLAlchemy
     db.create_all()
+print(">>> Backend: Database initialized.")
 
 from routes.auth_routes import auth_bp
 from routes.chat_routes import chat_bp
 
+print(">>> Backend: Registering blueprints...")
 app.register_blueprint(user_bp, url_prefix='/api/users')
 app.register_blueprint(room_bp, url_prefix='/api/rooms')
 app.register_blueprint(auth_bp, url_prefix='/api/auth')
